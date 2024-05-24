@@ -43,5 +43,9 @@ export const AUDIT_PARTNER = {
     english: {
 
     }
+  },
+  REDIRECT_ROUTER: {
+    login: '/Auth/AuditPartner/login',
+    register: '/Auth/AuditPartner/register'
   }
 }

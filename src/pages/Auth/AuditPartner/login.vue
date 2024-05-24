@@ -30,8 +30,8 @@ definePage({
 })
 
 const form = ref({
-  email: '',
-  password: '',
+  correo: '',
+  contrasena: '',
   remember: false,
 })
 
@@ -45,27 +45,16 @@ const ability = useAbility()
 const refVForm = ref<VForm>()
 
 const credentials = ref({
-  email: 'admin@demo.com',
-  password: 'admin',
+  correo: 'admin@demo.com',
+  contrasena: 'admin',
 })
 
 const rememberMe = ref(false)
 
 const login = async () => {
 
-  // console.log('data - submit', credentials)
-  // return;
   try {
-    const response = await loginSession(credentials.value.email, credentials.value.password);
-    const { token } = response
-
-    // useCookie('userAbilityRules').value = userAbilityRules
-    // ability.update(userAbilityRules)
-    // useCookie('userData').value = userData
-    useCookie('accessToken').value = token
-
-    // Redirect to `to` query if exist or redirect to index route
-    // ❗ nextTick is required to wait for DOM updates and later redirect
+    await loginSession(credentials.value.correo, credentials.value.contrasena);
     await nextTick(() => {
       router.replace(route.query.to ? String(route.query.to) : '/')
     })
@@ -136,26 +125,13 @@ const onSubmit = () => {
             {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.title }} 👋🏻
           </h4>
         </VCardText>
-        <!-- <VCardText>
-          <VAlert
-            color="primary"
-            variant="tonal"
-          >
-            <p class="text-sm mb-2">
-              Admin Email: <strong>admin@demo.com</strong> / Pass: <strong>admin</strong>
-            </p>
-            <p class="text-sm mb-0">
-              Client Email: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
-            </p>
-          </VAlert>
-        </VCardText> -->
         <VCardText>
           <VForm ref="refVForm" @submit.prevent="onSubmit">
             <VRow>
               <!-- email -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="credentials.email"
+                  v-model="credentials.correo"
                   autofocus
                   :label="`${AUDIT_PARTNER.LOGIN_TEXT.spanish.email}`"
                   type="email"
@@ -166,7 +142,7 @@ const onSubmit = () => {
               <!-- password -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="credentials.password"
+                  v-model="credentials.contrasena"
                   :label="`${AUDIT_PARTNER.LOGIN_TEXT.spanish.password}`"
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"

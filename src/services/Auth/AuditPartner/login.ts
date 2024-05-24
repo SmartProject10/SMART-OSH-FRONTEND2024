@@ -1,9 +1,13 @@
+import { useAuth } from "@/store/auth";
+
 const errors = ref<Record<string, string | undefined>>({
-  email: undefined,
-  password: undefined,
+  correo: undefined,
+  contrasena: undefined,
 })
 
-export const  loginSession = async ( email: string, password: string) => {
+const auth = useAuth();
+
+export const  loginSession = async ( correo: string, contrasena: string) => {
   
   try {
     
@@ -11,16 +15,19 @@ export const  loginSession = async ( email: string, password: string) => {
       
       method: 'POST',
       body: {
-        email: email,
-        password: password,
+        correo,
+        contrasena,
       },
       onResponseError({ response }) {
         errors.value = response._data.errors
       },
     })
   
-    return response;
+    const { data } = response;
+    auth.setToken(data);
+    auth.setUser(data);
+    auth.setIsAuth(true);
   } catch (error) {
-    console.log('Login Error - ', error)
+    throw new Error(`Error de autenticación ${error}`);
   }
 }

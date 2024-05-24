@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useAuth } from '@/store/auth';
 import avatar1 from '@images/avatars/avatar-1.png';
+
+const auth = useAuth();
 </script>
 
 <template>
@@ -111,7 +114,7 @@ import avatar1 from '@images/avatars/avatar-1.png';
           <VDivider class="my-2" />
 
           <!-- 👉 Logout -->
-          <VListItem to="/Auth/AuditPartner/login">
+          <VListItem @click="auth.logout()">
             <template #prepend>
               <VIcon
                 class="me-2"

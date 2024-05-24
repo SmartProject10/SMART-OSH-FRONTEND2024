@@ -1,8 +1,8 @@
 import { createApp } from 'vue';
 
 import App from '@/App.vue';
-import i18n from "@/plugins/i18n";
 import { registerPlugins } from '@core/utils/plugins';
+import { useAuth } from './store/auth';
 
 // Styles
 import '@core/scss/template/index.scss';
@@ -14,7 +14,17 @@ const app = createApp(App)
 // Register plugins
 registerPlugins(app)
 
-app.use(i18n)
+if (localStorage.getItem('accessToken')) {
+  (async () => {
+    const auth = useAuth();
+    try {
+      auth.setIsAuth(true);
+       await auth.checkToken();
+    } catch (error) {
+      auth.clear()
+    }
+  })()
+}
 
 // Mount vue app
 app.mount('#app')

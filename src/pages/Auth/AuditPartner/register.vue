@@ -31,12 +31,17 @@ definePage({
 const refVForm = ref<VForm>()
 
 const form = ref({
-  names: '',
-  lastName: '',
-  email: '',
-  password: '',
-  repeatPassword: '',
-  phone: '',
+  nombre: '',
+  apellido: '',
+  telefono: '',
+  celular: '',
+  correo: '',
+  contrasena: '',
+  usuario: '',
+  sesion_activa: false,
+  direccion: '',
+  imagen_firma: '',
+  administrador: '',
   privacyPolicies: false,
 })
 
@@ -45,11 +50,11 @@ const isPasswordVisible = ref(false)
 const register = async () => {
   try {
     const data = {
-      names: form.value.names,
-      lastName: form.value.lastName,
-      email: form.value.email,
-      password: form.value.password,
-      phone: form.value.phone,
+      names: form.value.nombre,
+      lastName: form.value.apellido,
+      email: form.value.correo,
+      password: form.value.contrasena,
+      phone: form.value.telefono,
     }
     const response = await registerService(data);
   } catch (error) {
@@ -125,7 +130,7 @@ const onSubmit = () => {
               <!-- Names -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.names"
+                  v-model="form.nombre"
                   :rules="[requiredValidator]"
                   autofocus
                   :label="`${AUDIT_PARTNER.REGISTER.spanish.names}`"
@@ -135,7 +140,7 @@ const onSubmit = () => {
                <!-- lastName -->
                <VCol cols="12">
                 <AppTextField
-                  v-model="form.lastName"
+                  v-model="form.apellido"
                   :rules="[requiredValidator]"
                   autofocus
                   :label="`${AUDIT_PARTNER.REGISTER.spanish.lastName}`"
@@ -146,7 +151,7 @@ const onSubmit = () => {
               <!-- email -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.email"
+                  v-model="form.correo"
                   :rules="[requiredValidator, emailValidator]"
                   :label="`${AUDIT_PARTNER.REGISTER.spanish.email}`"
                   type="email"
@@ -157,7 +162,7 @@ const onSubmit = () => {
               <!-- password -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.password"
+                  v-model="form.contrasena"
                   :rules="[requiredValidator]"
                   :label="`${AUDIT_PARTNER.REGISTER.spanish.password}`"
                   placeholder="············"

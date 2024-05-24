@@ -4,16 +4,18 @@ export default [
     title: AUDIT_PARTNER.MENU.spanish.home,
     to: { name: 'root' },
     icon: { icon: 'tabler-smart-home' },
-    disabled: true
+    meta: { requiresAuth: true },
   },
   {
     title: 'Second page',
     to: { name: 'second-page' },
     icon: { icon: 'tabler-file' },
+    meta: { requiresAuth: true },
   },
   {
     title: 'Produc',
     to: { name: 'products' },
     icon: { icon: 'tabler-file' },
+    meta: { requiresAuth: true },
   },
 ]

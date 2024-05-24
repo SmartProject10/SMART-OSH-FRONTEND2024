@@ -3,6 +3,7 @@ import type { App } from 'vue'
 import { setupLayouts } from 'virtual:generated-layouts'
 import type { RouteRecordRaw } from 'vue-router/auto'
 
+import { useAuth } from '@/store/auth'
 import { createRouter, createWebHistory } from 'vue-router/auto'
 
 function recursiveLayouts(route: RouteRecordRaw): RouteRecordRaw {
@@ -27,6 +28,18 @@ const router = createRouter({
   extendRoutes: pages => [
     ...[...pages].map(route => recursiveLayouts(route)),
   ],
+})
+
+router.beforeEach((to, from, next) => {
+  const auth = useAuth();
+  const loggedIn = auth.isAuth && auth.token && auth.user
+
+  // to.matched.some(record => record.meta.requiresAuth) && 
+  if (!loggedIn && to.path !== AUDIT_PARTNER.REDIRECT_ROUTER.login) {
+    next(AUDIT_PARTNER.REDIRECT_ROUTER.login);
+  } else {
+    next()
+  }
 })
 
 export { router }
