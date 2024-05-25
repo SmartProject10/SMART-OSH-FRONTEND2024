@@ -1,8 +1,6 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 
-const router = useRouter()
-
 const useAuth = defineStore('auth', () => {
 
   const token = ref(localStorage.getItem("accessToken"));
@@ -45,7 +43,7 @@ const useAuth = defineStore('auth', () => {
       return data;
     } catch (error) {
       clear();
-      router.push(AUDIT_PARTNER.REDIRECT_ROUTER.login);
+      window.location.href = AUDIT_PARTNER.REDIRECT_ROUTER.login;
       console.log('error checkToken', error);
     }
   }

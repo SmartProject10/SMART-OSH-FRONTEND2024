@@ -10,8 +10,7 @@ const auth = useAuth();
 export const  loginSession = async ( correo: string, contrasena: string) => {
   
   try {
-    
-    const response = await $api('login', {
+    const response = await $api('users/login', {
       
       method: 'POST',
       body: {

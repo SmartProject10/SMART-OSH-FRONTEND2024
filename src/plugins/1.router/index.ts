@@ -35,7 +35,7 @@ router.beforeEach((to, from, next) => {
   const loggedIn = auth.isAuth && auth.token && auth.user
 
   // to.matched.some(record => record.meta.requiresAuth) && 
-  if (!loggedIn && to.path !== AUDIT_PARTNER.REDIRECT_ROUTER.login) {
+  if (!loggedIn && (to.path !== AUDIT_PARTNER.REDIRECT_ROUTER.login && to.path !== AUDIT_PARTNER.REDIRECT_ROUTER.register)) {
     next(AUDIT_PARTNER.REDIRECT_ROUTER.login);
   } else {
     next()

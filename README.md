@@ -16,6 +16,14 @@ However, if you wish to get actual prop types in `.vue` imports (for example to 
 
 See [Vite Configuration Reference](https://vitejs.dev/config/).
 
+## Config before install
+
+`` Create copy of file .env.example and the copy rename some .env``
+
+## install
+
+`` Install node version 21.6.2 or nvm manager link of instalation https://help.dreamhost.com/hc/es/articles/360029083351-Instalar-una-versi%C3%B3n-personalizada-de-NVM-y-Node-js for install node version 21.6.2 ``
+
 ## Project Setup
 
 ```sh
