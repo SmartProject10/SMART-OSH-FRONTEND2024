@@ -1,5 +1,5 @@
-import type { ThemeInstance } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
+import type { ThemeInstance } from 'vuetify'
 
 // 👉 Colors variables
 const colorVariables = (themeColors: ThemeInstance['themes']['value']['colors']) => {
@@ -75,9 +75,9 @@ export const getLineChartSimpleConfig = (themeColors: ThemeInstance['themes']['v
       zoom: { enabled: false },
       toolbar: { show: false },
     },
-    colors: ['#ff9f43'],
-    stroke: { curve: 'straight' },
-    dataLabels: { enabled: false },
+    colors: ['#77B6EA', '#545454'],
+    stroke: { curve: 'smooth' },
+    dataLabels: { enabled: true },
     markers: {
       strokeWidth: 7,
       strokeOpacity: 1,
