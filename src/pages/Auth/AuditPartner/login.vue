@@ -5,24 +5,14 @@ import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-ill
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
 import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
 import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustration-light.png'
+import logo from '@images/pages/logo_2sinfondo.png'
 import authV2MaskDark from '@images/pages/misc-mask-dark.png'
 import authV2MaskLight from '@images/pages/misc-mask-light.png'
-import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
-import { themeConfig } from '@themeConfig'
- 
-definePage({
-  meta: {
-    layout: 'blank',
-  },
-})
+import { VForm } from 'vuetify/components/VForm'
 
-const form = ref({
-  email: '',
-  password: '',
-  remember: false,
-})
 
-const isPasswordVisible = ref(false)
+import { loginSession } from '@/services/Auth/AuditPartner/login'
+import { AUDIT_PARTNER } from "../../../../src/utils/constants"
 
 const authThemeImg = useGenerateImageVariant(
   authV2LoginIllustrationLight,
@@ -32,18 +22,58 @@ const authThemeImg = useGenerateImageVariant(
   true)
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+
+definePage({
+  meta: {
+    layout: 'blank',
+  },
+})
+
+const form = ref({
+  correo: '',
+  contrasena: '',
+  remember: false,
+})
+
+const isPasswordVisible = ref(false)
+
+const route = useRoute()
+const router = useRouter()
+
+const ability = useAbility() 
+
+const refVForm = ref<VForm>()
+
+const credentials = ref({
+  correo: 'admin@demo.com',
+  contrasena: 'admin',
+})
+
+const rememberMe = ref(false)
+
+const login = async () => {
+
+  try {
+    await loginSession(credentials.value.correo, credentials.value.contrasena);
+    await nextTick(() => {
+      router.replace(route.query.to ? String(route.query.to) : '/')
+    })
+  }
+  catch (err) {
+    console.error(err)
+  }
+}
+
+const onSubmit = () => {
+  refVForm.value?.validate()
+    .then(({ valid: isValid }) => {
+      if (isValid)
+        login()
+    })
+}
 </script>
 
 <template>
-  <RouterLink to="/">
-    <div class="auth-logo d-flex align-center gap-x-3">
-      <VNodeRenderer :nodes="themeConfig.app.logo" />
-      <h1 class="auth-title">
-        {{ themeConfig.app.title }}
-      </h1>
-    </div>
-  </RouterLink>
-
   <VRow
     no-gutters
     class="auth-wrapper bg-surface"
@@ -53,6 +83,12 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
       class="d-none d-md-flex"
     >
       <div class="position-relative bg-background w-100 me-0">
+        <VImg
+        max-width="213"
+        :src="logo"
+        class="auth-logo d-flex align-center gap-x-3"
+        style="z-index: 1001 !important;"
+        />
         <div
           class="d-flex align-center justify-center w-100 h-100"
           style="padding-inline: 6.25rem;"
@@ -86,34 +122,18 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
       >
         <VCardText>
           <h4 class="text-h4 mb-1">
-            Welcome to <span class="text-capitalize"> {{ themeConfig.app.title }} </span>! 👋🏻
+            {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.title }} 👋🏻
           </h4>
-          <p class="mb-0">
-            Please sign-in to your account and start the adventure
-          </p>
         </VCardText>
         <VCardText>
-          <VAlert
-            color="primary"
-            variant="tonal"
-          >
-            <p class="text-sm mb-2">
-              Admin Email: <strong>admin@demo.com</strong> / Pass: <strong>admin</strong>
-            </p>
-            <p class="text-sm mb-0">
-              Client Email: <strong>client@demo.com</strong> / Pass: <strong>client</strong>
-            </p>
-          </VAlert>
-        </VCardText>
-        <VCardText>
-          <VForm @submit.prevent="() => { }">
+          <VForm ref="refVForm" @submit.prevent="onSubmit">
             <VRow>
               <!-- email -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.email"
+                  v-model="credentials.correo"
                   autofocus
-                  label="Email"
+                  :label="`${AUDIT_PARTNER.LOGIN_TEXT.spanish.email}`"
                   type="email"
                   placeholder="johndoe@email.com"
                 />
@@ -122,8 +142,8 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
               <!-- password -->
               <VCol cols="12">
                 <AppTextField
-                  v-model="form.password"
-                  label="Password"
+                  v-model="credentials.contrasena"
+                  :label="`${AUDIT_PARTNER.LOGIN_TEXT.spanish.password}`"
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'tabler-eye-off' : 'tabler-eye'"
@@ -132,14 +152,20 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 
                 <div class="d-flex align-center flex-wrap justify-space-between mt-2 mb-4">
                   <VCheckbox
-                    v-model="form.remember"
-                    label="Remember me"
+                    v-model="rememberMe"
+                    :label="`${AUDIT_PARTNER.LOGIN_TEXT.spanish.remember}`"
                   />
                   <a
                     class="text-primary ms-2 mb-1"
-                    href="#"
+                    :to="{name: 'forgot-password'}"
                   >
-                    Forgot Password?
+                    {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.forgotEmail }}
+                  </a>
+                  <a
+                    class="text-primary ms-2 mb-1"
+                    :to="{name: 'forgot-password'}"
+                  >
+                    {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.forgotPassword }}
                   </a>
                 </div>
 
@@ -147,23 +173,22 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
                   block
                   type="submit"
                 >
-                  Login
+                  {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.login }}
                 </VBtn>
               </VCol>
-
               <!-- create account -->
               <VCol
                 cols="12"
                 class="text-center"
               >
-                <span>New on our platform?</span>
+                <span>{{ AUDIT_PARTNER.LOGIN_TEXT.spanish.accountText }}</span>
 
-                <a
+                <RouterLink
                   class="text-primary ms-2"
-                  href="#"
+                  :to="{ name: 'auth-audit-partner-register' }"
                 >
-                  Create an account
-                </a>
+                  {{ AUDIT_PARTNER.LOGIN_TEXT.spanish.createAccount }}
+                </RouterLink>
               </VCol>
               <VCol
                 cols="12"
@@ -188,6 +213,7 @@ const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
     </VCol>
   </VRow>
 </template>
+
 
 <style lang="scss">
 @use "@core/scss/template/pages/page-auth.scss";

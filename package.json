@@ -19,6 +19,7 @@
     "@floating-ui/dom": "1.6.1",
     "@iconify-json/fa": "1.1.8",
     "@iconify-json/tabler": "1.1.106",
+    "@rollup/rollup-win32-x64-msvc": "^4.18.0",
     "@sindresorhus/is": "6.2.0",
     "@tiptap/extension-highlight": "2.2.4",
     "@tiptap/extension-image": "2.2.4",
